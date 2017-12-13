@@ -296,10 +296,21 @@
 >
 >  redirect to '/'
 >end
->
 >```
 >
+>#### pry에서 admin 계정 만들어보기
 >
+>```unbuntu
+>require './app.rb'
+>
+>User.create(
+>	:email => "admin@admin.com",
+>	:password => "admin",
+>	:is_admin => true
+>)
+>```
+
+
 
 ### 3. real_blog 로그인 기능 붙이기
 
@@ -442,8 +453,18 @@
 >Post.auto_upgrade!
 >User.auto_upgrade!
 >```
+
+
+
+### 4. sinatra에 부트스트랩 테마 적용하는 방법!
+
+>**Move your static files(css/js) into a folder named `public`. Sinatra looks there with default settings.**
 >
+>**If you want to change that behaviour have a look at this: [Static Files](http://www.sinatrarb.com/intro#Static%20Files)**
 >
+>**Sinatra는 css를 include 할 수 없으므로 ! public 이라는 폴더를 만든 후 css 및 image 폴더들을 public 으로 옮겨서 실행하면 된다 !**
+
+
 
 
 
