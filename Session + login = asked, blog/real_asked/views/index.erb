@@ -1,0 +1,22 @@
+  <body>
+    <form action="/asked">
+        <div class="form-group col-md-4">
+          <label for="inputState">질문자</label>
+          <select id="inputState" name = "id" class="form-control">
+            <option value="익명">익명</option>
+            <option value="<%= session[:email]%>">아이디</option>
+          </select><br>
+          <input type="text" class="form-control" name="question" id="exampleInputTitle" aria-describedby="titlelHelp" placeholder="질문을 입력하세요">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <% @q_list.each do |q|%>
+      <div class="card">
+        <div class="card-body">
+          <p>질문자 : <%= q.name %></p>
+          <p>질문 : <%= q.question %></p>
+        </div>
+      </div>
+    <% end %>
+  </body>

@@ -1,0 +1,32 @@
+<body>
+    <% if session[:email]%>
+    <form action="/create">
+        <div class="form-group col-md-5">
+          <label for="exampleInputEmail1">제목</label>
+          <input type="text" class="form-control" name="title" id="exampleInputTitle" aria-describedby="titlelHelp" placeholder="제목을 입력하세요">
+          <small id="titleHelp" class="form-text text-muted">제목은 필수로 입력하셔야 합니다.</small>
+        </div>
+        <div class="form-group col-md-5">
+          <label for="exampleInputPassword1">내용</label>
+          <input type="text" class="form-control" name="content" id="exampleInputContent" placeholder="내용을 입력하세요">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <!-- 로그인 후 글쓰기 가능 -->
+    <% else %>
+      <h1>Welcome to Real Blog!</h1>
+      <h5>로그인 후 글쓰기가 가능합니다.</h5>
+    <% end %>
+    <!--Post에 저장된 title, body 을 출력해주는 코드-->
+    <br>
+    <h1>목록</h1>
+    <% @posts.each do |post|%>
+      <div class="card">
+        <div class="card-body">
+          <p>제목 : <%= post.title %></p>
+          <p>내용 : <%= post.body %></p>
+        </div>
+      </div>
+    <% end %>
+  </body>
+</html>

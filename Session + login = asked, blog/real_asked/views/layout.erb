@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Real Asked</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link active" href="/">홈으로</a>
+      </li>
+      <!-- if 먼저 로그인이 되어 있을 경우-->
+      <!-- 로그아웃, xxx님 환영합니다.-->
+      <!-- else 로그인이 되어있지 않을 경우 -->
+      <!-- 로그인, 회원가입 버튼 보여주기 -->
+      <% if session[:email] %>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">로그아웃</a>
+      </li>
+      <% else %>
+        <li class="nav-item">
+          <a class="nav-link" href="/signup">회원가입</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">로그인</a>
+        </li>
+      <% end %>
+      <!-- 만약 지금 로그인된 유저가 admin일 경우 -->
+      <% if session[:email]&& User.first(:email => session[:email]).is_admin == true %>
+      <!-- first는 User db에 첫번째 친구가 아니라 !! -->
+      <!-- eamil => session[:email] 이 똑같은 친구들중에 첫번째 친구를 찾아줘-->
+      <li class="nav-item">
+        <a class="nav-link" href="/admin">관리자</a>
+      </li>
+      <% end %>
+    </ul>
+    <h1>Welcome to Real Asked!</h1>
+    <% if session[:email] %>
+    <h5><%= session[:email] %>님 환영합니다.</h5>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

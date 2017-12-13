@@ -1,0 +1,12 @@
+<% @user_list.each do |u| %>
+  <div class="card">
+    <div class="card-body">
+      <p>
+      <%= u.id %>
+      <%= u.email %>
+      <%= u.password %>
+      <%= u.created_at %>
+      </p>
+    </div>
+  </div>
+<% end %>
