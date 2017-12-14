@@ -1,0 +1,16 @@
+<body>
+  <h1>Welcome to Board!</h1>
+  <% @list.each do |q|%>
+    <div class="card">
+      <div class="card-body">
+        <p>번호 : <%= q.id %></p>
+        <p>제목 : <%= q.title %></p>
+        <p>내용 : <%= q.content %></p>
+        <p>작성자 : <%= q.author %></p>
+        <p>작성시간 : <%= q.created_at %></p>
+        <a href="/destroy/<%=q.id%>">[삭제]</a>
+        <a href="/edit/<%=q.id%>">[수정]</a>
+      </div>
+    </div>
+  <% end %>
+</body>

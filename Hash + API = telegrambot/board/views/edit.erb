@@ -1,0 +1,11 @@
+<body>
+  <h1>수정하기</h1>
+  <form action="/update/<%= @post.id %>">
+      <div class="form-group col-md-4">
+        <input type="text" class="form-control" name="title" value="<%= @post.title %>">
+        <input type="text" class="form-control" name="content" value="<%= @post.content %>">
+        <input type="hidden" name="author" value="">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</body>
