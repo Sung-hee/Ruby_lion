@@ -1,0 +1,5 @@
+<h1>회원목록</h1>
+<% @users.each do |list| %>
+  <p> eamil : <%= list.email %> </p>
+  <p> password : <%= list.password %> </p>
+<% end %>

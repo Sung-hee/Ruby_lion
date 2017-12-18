@@ -1,0 +1,7 @@
+<body>
+  <h1>게시판입니다.</h1>
+  <% @posts.each do |list| %>
+  <p> 제목 : <%= list.title %> </p>
+  <p> 내용 : <%= list.content %> </p><br>
+  <% end %>
+</body>
