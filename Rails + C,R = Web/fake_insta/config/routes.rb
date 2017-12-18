@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   get '/users/signup' => 'users#signup'
   get '/users/register' => 'users#register'
   get '/users/user_list' => 'users#user_list'
+  get '/users/login' => 'users#login'
+  get '/users/login_session' => 'users#login_session'
+  get '/users/logout' => 'users#logout'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

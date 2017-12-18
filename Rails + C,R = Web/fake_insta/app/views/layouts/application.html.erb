@@ -13,8 +13,16 @@
   <a href="/posts">게시판</a>
   <a href="/posts/new">글쓰기</a>
   <a href="/users">인스타</a>
-  <a href="/users/signup">회원가입</a>
+  <% if session[:email] %>
+    <a href="/users/logout">로그아웃</a>
+  <% else %>
+    <a href="/users/signup">회원가입</a>
+    <a href="/users/login">로그인</a>
+  <% end %>
   <a href="/users/user_list">유저목록</a>
+  <% if session[:email] %>
+    <h5><%= session[:email]%>님 환영합니다.</h5>
+  <% end %>
 <%= yield %>
 
 </body>
