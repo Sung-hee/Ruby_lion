@@ -6,7 +6,7 @@
 
 ### 1. 오늘의 복습은 rails 밑바닥부터 짜기 !
 
-> #### 1. rails_board 만들기 !
+> #### 1. rails_board 만들기 ! 
 >
 > ```ruby
 > # Rails 프로젝트를 생성 'rails_board'
