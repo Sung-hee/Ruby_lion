@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RailsTelegram</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <a href="/">home</a>
+  <% unless current_user %>
+    <a href="/users/signup">signup</a>
+    <a href="/users/login">login</a>
+  <% else %>
+    <a href="/users/logout">logout</a>
+    <p><%= current_user.email %>님 환영합니다.</p>
+  <% end %>
+  <!-- if session[:user_id]
+          session[:user_id]
+       end -->
+<%= yield %>
+
+</body>
+</html>

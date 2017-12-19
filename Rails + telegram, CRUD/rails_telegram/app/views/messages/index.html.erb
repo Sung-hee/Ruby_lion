@@ -1,0 +1,14 @@
+<h1>텔레그램 메세지 보내기</h1>
+<p>아래에 메세지를 입력해주세용</p>
+<form action="/messages/send_msg">
+  메세지 : <input type="text" name="msg">
+  <input type="submit" value="전송">
+</form>
+<h1>메세지 목록</h1>
+<% @messages.each do |list| %>
+  <p>
+    <!-- 작성자 : <%= User.find(list.user_id).email %>  조인 전 user_id의 email 정보 가져오기-->
+    <%= list.user.email %> | 메세지 내용 : <%= list.content %> | <%= time_ago_in_words(list.created_at).split(" ")[0] + "분전" %>
+    <!-- <%= ((Time.now - list.created_at) / 60).round.to_s + "분전"%> -->
+  </p>
+<% end %>

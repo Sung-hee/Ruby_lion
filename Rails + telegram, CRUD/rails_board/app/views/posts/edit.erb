@@ -1,0 +1,7 @@
+<a href="/">홈으로</a>
+<h1>글 수정하기</h1>
+<form action="/posts/update/<%= @post.id %>">
+  <input type="text" name="title" value="<%= @post.title %>">
+  <input type="text" name="content" value="<%= @post.content %>">
+  <input type="submit" value="확인">
+</form>
