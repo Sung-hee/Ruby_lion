@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-3">수정하기</h1><br>
+      <form action="/posts/update/<%= @post.id %>">
+        <div class="form-group">
+          <input type="text" class="form-control" name="content" value="<%= @post.title %>"><br>
+          <input type="text" class="form-control" name="content" value="<%= @post.content %>"><br>
+          <button type="submit" class="btn btn-primary">등록</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="container">
+<p>
+  <div class="card" style="width: 70rem;">
+    <div class="card-body">
+      <h4 class="card-title"><%= @post.title %></h4>
+      <h6 class="card-subtitle mb-2 text-muted"><%= @post.user.email %></h6>
+      <p class="card-text"><%= @post.content %></p>
+      <a href="/posts/edit/<%= @post.id %>" class="card-link btn btn-primary">수정</a>
+      <a href="/posts/destroy/<%= @post.id%>" class="card-link btn btn-danger">삭제</a>
+    </div>
+  </div>
+</p>
+<div class="card" style="width: 70rem;">
+  <div class="card-header">
+    댓글목록
+  </div>
+  <ul class="list-group list-group-flush">
+    <% @post.comments.each do |comment| %>
+    <li class="list-group-item"><%= comment.user.email %> : <%= comment.content %></li>
+    <% end %>
+  </ul>
+</div>
+
+<form action="/posts/<%= @post.id %>/add_comment">
+  <div class="form-group">
+    <input type="text" class="form-control" name="content" placeholder="댓글을 입력하세요">
+    <button type="submit" class="btn btn-primary">등록</button>
+  </div>
+</form>
+</div>

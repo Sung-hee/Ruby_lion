@@ -1,0 +1,32 @@
+<div class="container">
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link active" href="/">게시판</a>
+    </li>
+    <% if current_user %>
+      <li class="nav-item">
+        <a class="nav-link active" href="/"><%= current_user.email %></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/logout">로그아웃</a>
+      </li>
+    <% else %>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/signup">회원가입</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/login">로그인</a>
+      </li>
+      <span class="navbar-brand mb-0 h1"></span>
+    <% end %>
+  </ul>
+  <% if flash[:notice]%>
+    <div class="alert alert-primary" role="alert">
+      <p><%= flash[:notice] %></p>
+    </div>
+  <% elsif flash[:alert] %>
+    <div class="alert alert-danger" role="alert">
+      <p><%= flash[:alert] %></p>
+    </div>
+  <% end %>
+</div>

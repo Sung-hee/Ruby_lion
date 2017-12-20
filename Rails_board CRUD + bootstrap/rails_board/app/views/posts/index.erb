@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-3">Hello !</h1>
+    <p class="lead">여러분의 이야기를 남길 수 있는 공간입니다.</p>
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="/posts/new" role="button">글 쓰러가기</a>
+    </p>
+  </div>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">제목</th>
+        <th scope="col">글쓴이</th>
+        <th scope="col">작성일</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%@posts.each do |list|%>
+        <tr>
+          <th scope="row"> <%= list.id %> </th>
+          <td><a href="/posts/show/<%= list.id %>"><%= list.title %></a></td>
+          <td><%= list.user.email %></td>
+          <td> <%= time_ago_in_words(list.created_at) %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
