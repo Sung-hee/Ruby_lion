@@ -6,7 +6,7 @@
 
 ### 1. 오늘의 복습은 rails 밑바닥부터 짜기 !
 
-> #### 1. rails_board 만들기 !
+> #### 1. rails_board 만들기 ! 
 >
 > ```ruby
 > # Rails 프로젝트를 생성 'rails_board'
@@ -186,7 +186,7 @@
 ># Message belongs to user 
 ># -----------rails에 입력하기-----------
 ># 5. app -> models ->  user.rb
-># => hash_many :messages 입력
+># => has_many :messages 입력
 ># 6. app -> models -> message.rb
 ># => belongs_to :user 입력
 ># 끝 ! 그러면 이제부터
