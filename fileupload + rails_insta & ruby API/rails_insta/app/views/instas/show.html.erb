@@ -1,0 +1,35 @@
+<div class="container">
+  <p>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h4 class="card-title"><%= @post.title %></h4>
+        <h6 class="card-subtitle mb-2 text-muted"><%= @post.user.email %></h6>
+        <p class="card-text"><%= @post.content %></p>
+        <p class="card-text"><img src="<%= @post.avatar %>" width="600"></p>
+        <h5>
+          <%= link_to "수정", "/instas/edit/#{@post.id}" %>
+          <!-- <a href="/instas/edit/<%= @post.id %>">수정</a> -->
+          <%= link_to "삭제", "/instas/destroy/#{@post.id}", data: {method: "post", confirm: "진짜 삭제 하실거에요?"}%>
+          <!-- <a href="/instas/destroy/<%= @post.id%>">삭제</a> -->
+        </h5>
+      </div>
+    </div>
+  </p>
+  <div class="card mb-3">
+    <div class="card-header">
+      댓글목록
+    </div>
+    <ul class="list-group list-group-flush">
+      <% @post.comments.each do |comment| %>
+      <li class="list-group-item"><%= comment.user.email %> : <%= comment.content %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <form action="/instas/add_comment/<%= @post.id %>">
+    <div class="form-group">
+      <input type="text" class="form-control" name="content" placeholder="댓글을 입력하세요">
+      <button type="submit" class="btn btn-primary">등록</button>
+    </div>
+  </form>
+</div>

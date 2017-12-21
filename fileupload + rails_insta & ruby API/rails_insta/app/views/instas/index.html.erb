@@ -1,0 +1,16 @@
+<div class="container">
+  <% @posts.each do |list| %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <p class="card-text">제목 : <%= list.title %></p>
+      <h4 class="card-title"><a href="/instas/show/<%= list.id %>">내용 : <%= list.content %></a></h4>
+      <p class="card-text"><small class="text-muted">작성자 : <%= list.user.email %> | <%= time_ago_in_words(list.created_at).split(" ")[0] + "분전" %></small></p>
+    </div>
+  </div>
+  <% end %>
+  <ul class="nav nav-pills float-right">
+    <li class="nav-item">
+      <a class="nav-link active" href="/instas/new">글쓰기</a>
+    </li>
+  </ul>
+<div>

@@ -1,0 +1,37 @@
+<header class="header clearfix">
+  <nav>
+    <ul class="nav nav-pills float-right">
+      <li class="nav-item">
+        <a class="nav-link active" href="/">홈으로 <span class="sr-only">(current)</span></a>
+      </li>
+      <% unless current_user %>
+      <li class="nav-item">
+        <%= link_to "회원가입", "/users/signup", class: "nav-link" %>
+        <!-- <a class="nav-link" href="/users/signup">회원가입</a> -->
+      </li>
+      <li class="nav-item">
+        <%= link_to "로그인", "/users/login", class: "nav-link"%>
+        <!-- <a class="nav-link" href="/users/login">로그인</a> -->
+      </li>
+      <% else %>
+      <li class="nav-item">
+        <%= link_to "로그아웃", "/users/logout", class: "nav-link" %>
+        <!-- <a class="nav-link" href="/users/logout">로그아웃</a> -->
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/"><%= current_user.email %>님 환영합니다.</a>
+      </li>
+      <% end %>
+    </ul>
+  </nav>
+  <h1 class="text-muted"><a href="/"/>Instagrams</a></h1>
+  <% if flash[:notice] %>
+    <div class="alert alert-primary" role="alert">
+      <p><%= flash[:noice] %></p>
+    </div>
+  <% elsif flash[:alert] %>
+    <div class="alert alert-primary" role="alert">
+      <p><%= flash[:alert] %></p>
+    </div>
+  <% end %>
+</header>
