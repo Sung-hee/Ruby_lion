@@ -1,2 +1,9 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<h1>ODK한테 스팸보내자</h1>
+<p>테스트는 끝났다. 준비해라</p>
+<form action="/home/spam">
+  받는 사람 : <input type="email" name="receiver"><br>
+  제목 : <input type="text" name="title" ><br>
+  <input id="x" type="hidden" name="content">
+  <trix-editor input="x"></trix-editor>
+  <input type="submit" value="제출">
+</form>

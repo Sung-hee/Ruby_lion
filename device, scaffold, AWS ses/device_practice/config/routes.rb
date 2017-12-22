@@ -10,10 +10,11 @@ Rails.application.routes.draw do
   # post 'login', to: 'devise/sessions#create', as: :user_session
   # delete 'logout', to: 'devise/sessions#destroy', as: :destroy_user_session
   # end
-  
+
   root 'home#index'
 
   get 'home/index'
+  get 'home/spam'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
