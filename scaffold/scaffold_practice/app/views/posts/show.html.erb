@@ -1,0 +1,7 @@
+<h1>자세히보여줌</h1>
+<p>
+  너가 쓴 제목 : <%= @post.title %><br>
+  너가 쓴 내용 : <%= @post.content %><br>
+  <%= link_to "수정", "/posts/#{@post.id}/edit" %>
+  <%= link_to "삭제", "/posts/#{@post.id}", method: "delete"%>
+</p>

@@ -1,0 +1,12 @@
+<h1>ㅎㅇ 게시판 연습</h1>
+<% @posts.each do |post| %>
+  <p>
+    <%= link_to post.title, post %>
+  </p>
+<% end %>
+
+<%= form_tag("https://www.google.co.kr/search", method: "get") do %>
+<%= label_tag(:q, "Search for:") %>
+<%= text_field_tag(:q) %>
+<%= submit_tag("구글검색") %>
+<% end %>

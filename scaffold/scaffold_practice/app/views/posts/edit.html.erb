@@ -1,0 +1,12 @@
+<h1>수정하자</h1>
+<!-- <form action="/posts/update/<%= @post.id %>">
+  <input type="text" name="title" value=" <%= @post.title %> "><br>
+  <input type="text" name="content" value=" <%= @post.content %> " ><br>
+  <input type="submit" value="확인">
+</form> -->
+
+<%= form_tag("/posts/#{@post.id}", method: "put") do %>
+<%= text_field_tag("post[title]", @post.title) %><br>
+<%= text_area_tag("post[content]", @post.content, size: "25x10") %>
+<%= submit_tag("수정하기") %>
+<% end %>

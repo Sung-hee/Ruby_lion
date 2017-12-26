@@ -1,0 +1,12 @@
+<h1>글쓰자</h1>
+<!-- <form action="/posts/create">
+  <input type="text" name="title" placeholder="제목입력해"><br>
+  <input type="text" name="content" placeholder="내용입력해"><br>
+  <input type="submit" value="확인">
+</form> -->
+
+<%= form_tag("/posts", method: "post") do %>
+<%= text_field_tag("post[title]") %><br>
+<%= text_area_tag("post[content]", "", placeholder: "placeholder text", size: "25x10") %>
+<%= submit_tag("글쓰기") %>
+<% end %>
