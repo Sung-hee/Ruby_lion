@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <div class="card">
+      <img class="card-img-top" src="<%= @movie.poster %>" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title"><%= @movie.title %></h4>
+        <p class="card-title"><%= @movie.genre %>, <%= @movie.nation %></p>
+        <p class="card-title">감독 : <%= @movie.director %></p>
+        <!-- 평점 평균 구하기 -->
+        <p class="card-title">평점 : <%= @movie.avg.round(2) %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="card">
+      <%= form_tag "/movies/#{@movie.id}/review", method: :post do %>
+        평점 : <%= select_tag "rating", "<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>".html_safe%><br>
+        리뷰 : <%= text_field_tag :comment %> <%= submit_tag "리뷰달기" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="card">
+      <% @movie.reviews.each do |review| %>
+        <h4 class="card-title">평점 : <%= review.rating %></h4>
+        <p class="card-text">작성자 : <%= review.user.nickname %></p>
+        <p class="card-text">코멘트 : <%= review.comment %></p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      <% end %>
+    </div>
+  </div>
+</div>

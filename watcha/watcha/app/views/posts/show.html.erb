@@ -1,0 +1,39 @@
+<p>
+  <strong>Title:</strong>
+  <%= @post.title %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @post.content %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @post.user.nickname %>
+</p>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>
+
+<div class="container">
+  <div class="row">
+    <div class="card">
+      <%= form_tag "/posts/#{@post.id}/comment", method: :post do %>
+        댓글 : <%= text_field_tag :comment %> <%= submit_tag "확인" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="card">
+        <% @post.comments.each do |list| %>
+            <p>
+              <%= list.user.nickname %> | <%= list.comment %>
+            </p>
+        <% end %>
+    </div>
+  </div>
+</div>

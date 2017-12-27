@@ -1,0 +1,31 @@
+<!--  모든 영화 정보를 보여준다(이쁘게) -->
+<main role="main">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">WATCHA!</h1>
+      <p class="lead text-muted">영화평점 사이트 왓챠!</p>
+      <p>
+        <%= link_to "게시판", posts_path, class: "btn btn-primary" %>
+        <%= link_to "영화 추가하기", new_movie_path, class: "btn btn-secondary" if check_admin%>
+      </p>
+    </div>
+  </section>
+
+  <div class="album text-muted">
+    <div class="container">
+
+      <div class="row">
+        <% @movies.each do |movie| %>
+          <div class="card">
+            <img class="card-img-top" src="<%= movie.poster %>" width="100%" height="280px" alt="Card image cap">
+            <div class="card-body">
+              <a href="/movies/<%= movie.id %>"><h5 class="card-title"><%= movie.title %></a></h5>
+              <p class="card-title">평점 : <%= movie.avg.round(1) %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</main>
