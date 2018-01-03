@@ -216,6 +216,32 @@
 >  - 설거지 -> 빨래 -> 청소 (3시간) / 이놈들을 순차적으로 수행하고 끝내는 것을 기다려야함. 딴 짓 못함
 >- 비동기적 일처리 방식 : 해야 할 일을 위임하고 기다리는 방식
 >  - 설거지(식기세척기) -빨래(세탁기) -청소(로봇청소기) / 이놈들을 동시에 수행하면서 나는 딴 짓을 할 수잇음 !
+>- rails에서의 ajax 
+>
+>```javascript
+>// 1. ajax 요청 만들기
+>$.ajax({
+>  // ajax로 요청을 보냄 >> JS파일에 대한 요청
+>  url: , //요청 보내는 url
+>  method: , //http method
+>  data: // data parameter
+>})
+>// 404error
+>
+>// 2. 요청 보내는 url에 대한 route설정
+>// member, collection
+>// config/routes.rb에서 설정
+>// 404 error
+>
+>// 3. controller에서 routes 설정한 controller#action 만들어줌
+>// controller#action 만들어줌
+>// 500 error
+>
+>// 4. action명과 같은 파일명을 가진 js.erb파일 만들어줌.
+>// 오타가 없다면, 정상적으로 동작함
+>```
+>
+>
 >
 >1. 좋아요 버튼을 ajax를 이용해서 비동기화 시키기 ( show.html.erb )
 >
@@ -289,9 +315,84 @@
 >}
 >```
 >
->5. ​
+>5. 댓글 추가하기
+>
+>```erb
+><!-- show.html.erb -->
+>
+><table class="table">
+>  <thead>
+>    <tr>
+>      <th>댓글</th>
+>      <th colspan="2"></th>
+>    </tr>
+>  </thead>
+>  <tbody class="comment-list">
+>    <% @board.comments.reverse.each do |comment| %>
+>      <tr>
+>        <td><%= comment.content %></td>
+>        <td></td>
+>        <td><button class="btn btn-outline-danger"><i class="fas fa-trash"></i> 삭제</button></td>
+>      </tr>
+>    <% end %>
+>  </tbody>
+></table>
+><% content_for :script do %>
+>  <script>
+>    $(function(){
+>     ....
+>      // 댓글기능
+>      // 1. form이 제출되면
+>      $('#comment-form').on('submit', function(e){
+>        // 2. form의 기본 이벤트를 막아주고
+>        e.preventDefault();
+>        // 3. form 안의 input 태그에서 입력한 값을 가져온 다음
+>        var data = $('#comment-input').val();
+>        // 4. 해당 값을 댓글을 등록하는 url로 보냄(ajax 이용)
+>        $.ajax({
+>          url: '/boards/<%= @board.id %>/comments',
+>          method: 'post',
+>          data: {
+>            contents: data
+>          }
+>        });
+>      });
+>    })
+>  </script>
+><% end %>
+>```
+>
+>6. boards_controller.rb 수정하기
+>
+>```ruby
+>def create_comment
+>  @comment = Comment.create(
+>    user_id: current_user.id,
+>    board_id: params[:id],
+>    content: params[:contents]
+>  )
+>end
+>```
+>
+>7. create_comment.js.erb 만들기
+>
+>```erb
+>// 5. 댓글을 보여주는 table의 tbody에 추가해줌
+>alert('댓글 등록됨 !');
+>$('.comment-list').prepend(`
+>  <tr>
+>    <td>${"<%= @comment.content %>"}</td>
+>    <td></td>
+>    <td><button class="btn btn-outline-danger"><i class="fas fa-trash"></i> 삭제</button></td>
+>  </tr>
+>  `);
+>// 6. input 태그를 비워줌
+>$('#comment-input').val('');
+>```
+>
+>
 
-
+​	
 
 
 

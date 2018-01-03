@@ -59,6 +59,7 @@ class BoardsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to boards_url, notice: 'Board was successfully destroyed.' }
       format.json { head :no_content }
+      format.js { redirect_to boards_url }
     end
   end
 
@@ -75,6 +76,20 @@ class BoardsController < ApplicationController
       @like = Like.create(user_id: current_user.id, board_id: params[:board_id])
       puts '좋아요 누름'
     end
+  end
+
+  def create_comment
+    @comment = Comment.create(
+      user_id: current_user.id,
+      board_id: params[:id],
+      content: params[:contents]
+    )
+  end
+
+  def destroy_comment
+    @comment = Comment.find(params[:id])
+
+    @comment.destroy
   end
 
   private

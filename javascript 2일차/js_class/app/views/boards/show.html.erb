@@ -8,7 +8,8 @@
   <%= @board.contents %>
 </p>
 <% if user_signed_in? && @board.require_permisson?(current_user) %>
-  <%= link_to '<i class="fas fa-trash"></i> 삭제'.html_safe, @board, class: "btn btn-danger", data: {method: :delete, confirm: 'Are you sure?'} %> |
+  <button class="btn btn-outline-danger delete"><i class="fas fa-trash"></i> 삭제</button>
+  <!-- <%= link_to '<i class="fas fa-trash"></i> 삭제'.html_safe, @board, class: "btn btn-danger", data: {method: :delete, confirm: 'Are you sure?'} %> | -->
   <%= link_to '<i class="fas fa-pencil-alt"></i> 수정'.html_safe, edit_board_path(@board), class: "btn btn-warning" %> |
 <% end %>
 <% if @like.length > 0 %>
@@ -17,8 +18,27 @@
   <button type="button" class="btn btn-outline-primary like"><i class="far fa-thumbs-up"></i>좋아요(<span id="like-count"><%= @board.likes.length %></span>)</button></a> |
 <% end %>
 <%= link_to '<i class="fas fa-home"></i> 홈으로'.html_safe, boards_path, class: "btn btn-dark" %>
-
-
+<form class="form-inline my-2 my-lg-2" id="comment-form">
+  <input class="form-control mr-sm-2" type="text" id="comment-input" placeholder="Comment">
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="far fa-comment-alt"></i>댓글쓰기</button>
+</form>
+<table class="table">
+  <thead>
+    <tr>
+      <th>댓글</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+  <tbody class="comment-list">
+    <% @board.comments.reverse.each do |comment| %>
+      <tr>
+        <td><%= comment.content %></td>
+        <td></td>
+        <td><button class="btn btn-outline-danger delete-comment" data-id="<%= comment.id %>"><i class="fas fa-trash"></i> 삭제</button></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 <% content_for :script do %>
   <script>
     $(function(){
@@ -28,8 +48,40 @@
         $.ajax({
           url: '/boards/<%= @board.id %>/like',
           method: "get"
-        })
-      })
+        });
+      });
+      // 댓글기능
+      // 1. form이 제출되면
+      $('#comment-form').on('submit', function(e){
+        // 2. form의 기본 이벤트를 막아주고
+        e.preventDefault();
+        // 3. form 안의 input 태그에서 입력한 값을 가져온 다음
+        var data = $('#comment-input').val();
+        // 4. 해당 값을 댓글을 등록하는 url로 보냄(ajax 이용)
+        $.ajax({
+          url: '/boards/<%= @board.id %>/comments',
+          method: 'post',
+          data: {
+            contents: data
+          }
+        });
+      });
+
+      $('.comment-list').on('click', '.delete-comment', function(){
+        var id = $(this).data('id');
+        $.ajax({
+          url: "/boards/<%= @board.id %>/comments" + id,
+          method: "delete"
+        });
+      });
+
+      $('.delete').on('click', function() {
+        $.ajax({
+          url: "<%= board_path(@board) %>.js",
+          method: "delete"
+        });
+      });
+
     })
   </script>
 <% end %>

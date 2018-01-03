@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
   resources :boards do
+    # member 같은 경우에는 routes에 자동으로 /:id/를 넣어준다.
+    member do
+      post '/comments' => 'boards#create_comment', as: :create_comment_to
+      delete '/comments:id' => 'boards#destroy_comment', as: :destroy_comment_to
+    end
+    # 하지만 collection는 자동으로 /:id/와 같이 잡아주지 않고 우리가 적은대로 만들어짐.
     collection do
       get '/:board_id/like' => 'boards#like_board', as: :user_like
     end
   end
+
 
   root 'boards#index'
 
