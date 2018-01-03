@@ -1,0 +1,35 @@
+<p>
+  <strong>Title:</strong>
+  <%= @board.title %>
+</p>
+
+<p>
+  <strong>Contents:</strong>
+  <%= @board.contents %>
+</p>
+<% if user_signed_in? && @board.require_permisson?(current_user) %>
+  <%= link_to '<i class="fas fa-trash"></i> 삭제'.html_safe, @board, class: "btn btn-danger", data: {method: :delete, confirm: 'Are you sure?'} %> |
+  <%= link_to '<i class="fas fa-pencil-alt"></i> 수정'.html_safe, edit_board_path(@board), class: "btn btn-warning" %> |
+<% end %>
+<% if @like.length > 0 %>
+  <button type="button" class="btn btn-primary like"><i class="far fa-thumbs-up"></i>좋아요(<span id="like-count"><%= @board.likes.count %></span>)</button></a> |
+<% else %>
+  <button type="button" class="btn btn-outline-primary like"><i class="far fa-thumbs-up"></i>좋아요(<span id="like-count"><%= @board.likes.length %></span>)</button></a> |
+<% end %>
+<%= link_to '<i class="fas fa-home"></i> 홈으로'.html_safe, boards_path, class: "btn btn-dark" %>
+
+
+<% content_for :script do %>
+  <script>
+    $(function(){
+      // 1. 좋아요 버튼을 눌렀을 때
+      $('.like').on('click', function(){
+        // 2. ajax를 이용해서 /board/:board_id/like 라는 url에 요청을 보냄
+        $.ajax({
+          url: '/boards/<%= @board.id %>/like',
+          method: "get"
+        })
+      })
+    })
+  </script>
+<% end %>
