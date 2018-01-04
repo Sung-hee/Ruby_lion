@@ -1,0 +1,122 @@
+<p>
+  <strong>Title:</strong>
+  <%= @board.title %>
+</p>
+
+<p>
+  <strong>Contents:</strong>
+  <%= @board.contents %>
+</p>
+<% if user_signed_in? && @board.require_permisson?(current_user) %>
+  <button class="btn btn-outline-danger delete"><i class="fas fa-trash"></i> 삭제</button>
+  <!-- <%= link_to '<i class="fas fa-trash"></i> 삭제'.html_safe, @board, class: "btn btn-danger", data: {method: :delete, confirm: 'Are you sure?'} %> | -->
+  <%= link_to '<i class="fas fa-pencil-alt"></i> 수정'.html_safe, edit_board_path(@board), class: "btn btn-warning" %> |
+<% end %>
+<% if @like.length > 0 %>
+  <button type="button" class="btn btn-primary like"><i class="far fa-thumbs-up"></i>좋아요(<span id="like-count"><%= @board.likes.count %></span>)</button></a> |
+<% else %>
+  <button type="button" class="btn btn-outline-primary like"><i class="far fa-thumbs-up"></i>좋아요(<span id="like-count"><%= @board.likes.length %></span>)</button></a> |
+<% end %>
+<%= link_to '<i class="fas fa-home"></i> 홈으로'.html_safe, boards_path, class: "btn btn-dark" %>
+<form class="form-inline my-2 my-lg-2" id="comment-form">
+  <input class="form-control mr-sm-2" type="text" id="comment-input" placeholder="Comment">
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="far fa-comment-alt"></i>댓글쓰기</button>
+</form>
+<table class="table">
+  <thead>
+    <tr>
+      <th width="70%">댓글</th>
+      <th width="15%"></th>
+      <th width="15%"></th>
+    </tr>
+  </thead>
+  <tbody class="comment-list">
+    <% @board.comments.reverse.each do |comment| %>
+      <tr id="comment-<%= comment.id %>">
+        <td class="comment" data-id="<%= comment.id %>"><%= comment.content %></td>
+        <td></td>
+        <td><button class="btn btn-outline-danger delete-comment" data-id="<%= comment.id %>"><i class="fas fa-trash"></i> 삭제</button></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% content_for :script do %>
+  <script>
+    $(function(){
+      // 1. 좋아요 버튼을 눌렀을 때
+      $('.like').on('click', function(){
+        // 2. ajax를 이용해서 /board/:board_id/like 라는 url에 요청을 보냄
+        $.ajax({
+          url: '/boards/<%= @board.id %>/like',
+          method: "get"
+        });
+      });
+      // 댓글기능
+      // 1. form이 제출되면
+      $('#comment-form').on('submit', function(e){
+        // 2. form의 기본 이벤트를 막아주고
+        e.preventDefault();
+        // 3. form 안의 input 태그에서 입력한 값을 가져온 다음
+        var data = $('#comment-input').val();
+        // 4. 해당 값을 댓글을 등록하는 url로 보냄(ajax 이용)
+        $.ajax({
+          url: '/boards/<%= @board.id %>/comments',
+          method: 'post',
+          data: {
+            contents: data
+          }
+        });
+      });
+
+      $('.comment-list').on('click', '.delete-comment', function(){
+        var id = $(this).data('id');
+        $.ajax({
+          url: "/boards/<%= @board.id %>/comments/" + id,
+          method: "delete"
+        });
+      });
+
+      $('.delete').on('click', function() {
+        $.ajax({
+          url: "<%= board_path(@board) %>.js",
+          method: "delete"
+        });
+      });
+
+      // 댓글 수정하기
+      // 1. 댓글 내용이 들어있는 td태그 부분을 누르면
+      $('.comment-list').on('click', '.comment', function(){
+        // 하나의 input 창이 열려있는 경우, 추가적인 input 창을 못열게
+        if ($(this).parents('.comment-list').find('.comment-form').length > 0){
+          // 이미 열려있는 comment-form이 있다면
+          alert('이미 수정중인 comment가 있습니다');
+          return false;
+        }
+        var text = $(this).text();
+        var id = $(this).data('id');
+
+        console.log(id);
+        // 3. 수정 완료 버튼을 삭제버튼 옆에 추가한다.
+        // 3번이 왜 여깄냐 ! input 태그로 바꾸면 siblings을 찾지 못해 버튼을 추가하기가 힘들기 때문 !
+        // 그러니까 input 타입으로 바꾸기 전에 버튼을 추가하자 !
+        $(this).siblings()[0].innerHTML = '<button class="btn btn-dark my-2 my-sm-0 update-comment" type="submit"><i class="fas fa-pencil-alt fa-spin"></i> 완료</button>';
+        // 2. 해당 부분을 댓글 내용이 들어있는 input 태그로 바꾸고
+        $(this).replaceWith(`<td class="edit-comment"><input class="form-control comment-form" value="${text}"><input class="comment-id" type="hidden" value="${id}"></td>`);
+      });
+      // 완료 버튼을 누르면 작성했던 내용이 서버로 가서 저장(update)
+      $('.comment-list').on('click', '.update-comment', function(){
+        // 1. input 태그에 있는 내용물을 뽑아서 서버로 보냄
+        var text = $('.comment-form').val();
+        var id = $('.comment-id').val();
+
+        $.ajax({
+          url: '/boards/<%= @board.id %>/comments/' + id,
+          method: 'patch',
+          data: {
+            content: text
+          }
+        })
+      })
+    })
+  </script>
+<% end %>

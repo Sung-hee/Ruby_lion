@@ -1,0 +1,18 @@
+if (<%= @tmp %> && "<%= @email %>" != ""){
+  // 해당 이메일로 가입한 유저가 없는 경우
+  alert("가입 가능한 이메일입니다.");
+  email = true;
+  // if ("<%= @password %>" == "<%= @password_confirmation%>" && <%= !@password %>){
+  //   $('button[type=submit]').removeAttr('disabled');
+  // }
+  // else {
+  //   alert("비밀번호가 다릅니다.");
+  // }
+}
+else {
+  // 해당 이메일로 가입한 유저가 있는 경우
+  alert("가입 불가능한 이메일입니다.");
+  $('button[type=submit]').attr('disabled', 'disabled');
+  email = false;
+}
+validation();
