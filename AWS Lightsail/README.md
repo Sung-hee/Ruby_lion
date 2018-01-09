@@ -1,153 +1,305 @@
-## - Anonymous Social Media Project
+## 멋쟁이사자처럼 프로젝트 실습 22일차
 
-* Concept
-
-  * 익명의 아이디로 글을 게시하고 공유하는 소셜 미디어.
-
-  * 익명의 아이디는 자신의 관심사(태그)로 글을 올리고 볼 수 있다.****
-
-  * **게시 된 글은 수명을 가지고 있고 다른 유저의 공감하기 버튼을 받으면 글의 수명이 늘어난다.**
-
-  * 수명이 다 한 글은 Database에서 지워진다. 
-
-    ---
-
-    #### 변경 
-
-    수명이 다 한 글은 Database에서 지우지 않고 index 페이지에서만 글을 없애고, 내 피드로 옮긴다.
-
-    ---
-
-* **추가 컨셉 회의**
-
-  * **단, 사용자는 글을 올리는 순간부터 게시글에 대한 제어권이 없음.**
-
-     => 공감을 받아서 글의 수명이 늘어나면 삭제를 못하게 됨.
-
-  * 내용추가기능 => 기존 내용 원본글은 변경이 불가하지만,
-
-    내용은 추가가능 ex) 네이트판 --------추가내용----------
-
-    ​							ㅁㄴㅇㄻㄴㅇㄻ
-
-    ​							ㅁㄴㅇㅁㄴㅁㄴ
-
-    ​						   -------------------------------- 
-
-  *  **반면에, 공감을 받지 못해 수명이 다한 글들에 한해서는 글쓴이가 'U, D' 에 해당하는 제어권을 부여함**
-
-  * **또한, 수명이 다한 글은 '사용자 피드 '에 남아 있음.**
-
-* Core Function
-
-  * 게시글 수명 제한하기.
-  * 공감을 받으면 게시글 수명 늘이기.
-  * 태그 기능
-    * 아이디 만들때 태그로 관심분야를 선택할 수 있다.
-    * 지정한 태그와 같은 카테고리의 글을 유저에게 제공.
-    * 유저가 글을 포스팅 할 때 태그를 설정할 수 있는 기능을 제공.
+### 오늘은 AWS 클라우드 서비스를 배우도록 하겠습니다 !
 
 
-* Controller 
 
-  * devise -> rails g devise User
+### 1.  사용할 프로젝트 선택
 
-  * scaffold (user -> C, R, U) -> rails g scaffold Post 
+>- 본인의 GitHub에 프로젝트 Repository가 있어야 한다.
+>- 개인 프로젝트가 없는 사람은 [fake_insta](https://github.com/classtak/fake_insta)를 fork 해서 사용하자.
 
-    ​               (admin -> C, R, U, D)
+### 2. Figaro( 중요 ! )
 
-  * home controller -> index
+>각종 중요한 정보들이 외부에 노출되지 않도록 관리해주는 gem  !
+>
+>1. Gemfile에 figaro를 추가
+>
+>```ruby
+>gem 'figaro'
+>```
+>
+>2. gem 설치
+>
+>```
+>$ bundle
+>```
 
-  * posts controller -> index, show, edit, new 
+### 3. Lightsail
 
-* Model 
+>#####1. Lightsail 인스턴스 생성은 쉬우니까 생략하겠습니다 !
+>
+>#####2. 주의사항
+>
+>- 인스턴스를 생성한 순간부터 과금이 될 수 있다. 과금 유의사항을 항상 자세히 읽어보기를 권장하며, 사용하지 않을 인스턴스는 바로 삭제를 해주는 것이 좋다.
+>
+>##### 3. Auto Server Setup Script
+>
+>3. 1) Auto Server Setup Script 가져오기
+>
+>```
+>$ git clone https://github.com/zzulu/yay-you-are-on-aws.git
+>```
+>
+>3. 2) 실행에 앞서 편의를 위하여 현재 폴더를 변경
+>
+>```
+>$ cd ~/yay-you-are-on-aws
+>```
+>
+>3. 3) rbenv.sh 실행
+>
+>서버 설정을 매우 편리하게 해주기 위하여 `scrpit`를 미리 작성하였음 ! 아까 받은 `script`를 실행하면 모든 설정이 자동으로 된다. sh 명령어를 사용하여 실행하자 !
+>
+>```
+>$ sh ./scripts/rbenv.sh
+>```
+>
+>3. 4) shell 새로고침 해주자 !
+>
+>```
+>$ exec $SHELL
+>```
+>
+>3. 5) ruby 설치
+>
+>`rbenv.sh`를 통해 우리는 Rails 설치 및 실행에 필요한 모든 프로그램과 `rbenv`를 설치해주었다. Ruby의 경우 rbenv를 통해 직접 설치해주어야 한다. 
+>
+>```
+>$ rbenv install 2.3.5
+>$ rbenv global 2.3.5 
+>$ gem install bundler
+>$ rbenv rehash
+>```
+>
+>3. 6) rails 설치
+>
+>```
+>$ gem install rails -v 4.2.9
+>```
+>
+>3. 7) nginx.sh 실행하기
+>
+>Web Server인 Nginx와 Application Server인 Passenger를 설치하는 script를 실행
+>
+>```
+>$ sh ./scripts/nginx.sh
+>```
+>
+>##### 4. 프로젝트 가져오기
+>
+>사용할 프로젝트 선택에서 선택한 프로젝트를 Lightsail Instance로 가져온다. 여기서는 [classtak](https://github.com/classtak)의 fake_insta를 가져오지만 각자 개인의 프로젝트를 가져와도 됨 !
+>
+>```
+>$ cd ~
+>$ git clone https://github.com/classtak/fake_insta.git
+>```
+>
+>##### 5. Nginx, Passenger 설정하기
+>
+>5. 1) Passenger 설정하기
+>
+>```
+>$ sudo vi /etc/nginx/passenger.conf
+>```
+>
+>5. 2)  `passenger_ruby` 부분을 다음과 같이 수정한다.
+>
+>```
+>passenger_ruby /home/ubuntu/.rbenv/shims/ruby;
+>```
+>
+>5. 3) Nginx 설정하기
+>
+>```
+>$ sudo vi /etc/nginx/nginx.conf
+>
+>:set nu -> 줄 번호를 출력해줌 
+>```
+>
+> 아래의 내용을 찾아, `include`로 시작하는 줄을 주석 해제한다.
+>
+>```
+># set nu를 입력했다면 63번째 줄 !
+>##
+># Phusion Passenger
+>##
+># Uncomment it if you installed ruby-passenger or ruby-passenger-enterprise
+>##
+>
+>include /etc/nginx/passenger.conf;
+>```
+>
+>파일을 하나 더 수정해야함 !
+>
+>```
+>$ sudo vi /etc/nginx/sites-enabled/default
+>```
+>
+>여기서도 :set nu 를 입력해서 줄 번호를 출력하자 
+>
+>```
+># 우리는 36번째 줄로 가서 
+># 숫자 '12' dd 를 입력하여 12번째 줄을 삭제하자 !
+>```
+>
+>파일의 내용을 다음과 같이 수정한다. `fake_insta`는 `3.4.`에서 가져온 프로젝트 이름으로 대체될 수 있다. 
+>
+> ```
+>server {
+>        listen 80;
+>        listen [::]:80 ipv6only=on;
+>        # 여기부터
+>        server_name         example.com;
+>        passenger_enabled   on;
+>        rails_env           production;
+>        root                /home/ubuntu/fake_insta/public;
+>        # 여기까지 총 4줄 추가
+>        # Add index.php to the list if you are using PHP
+>        # index index.html index.htm index.nginx-debian.html;
+>
+>        ## Comment the following block
+>        # location / {
+>        #   # First attempt to serve request as file, then
+>        #   # as directory, then fall back to displaying a 404.
+>        #   try_files $uri $uri/ =404;
+>        # }
+>}
+> ```
+>
+>설정 파일 편집이 완료되었으면 작성이 잘 되었는지 테스트하기 위하여 아래의 명령어를 입력한다.
+>
+>```
+>$ sudo nginx -t
+>```
+>
+>만약 문제가 없다면, 아래의 명령어를 입력하여 Nginx를 실행하자.
+>
+>```
+>$ sudo service nginx start
+>```
+>
+> ##### 6. 가져온 프로젝트 설정하기
+>
+>우선 가져온 프로젝트 폴더 안으로 이동
+>
+>```
+>$ cd ~
+>$ cd fake_insta
+>```
+>
+>gem 파일들을 설치
+>
+>```
+>$ bundle install
+>```
+>
+> `secrets.yml` 파일을 열어보면 production 부분에 secret_key_base가 설정되어 있지 않다. 노출되면 안되는 중요한 정보이기 때문에 Rails가 자동으로 생성하지 않아서 figaro를 이용하여 직접 설정해주어야 한다. figaro를 설치한다.
+>
+>```
+>$ bundle exec figaro install
+>```
+>
+>128자리 난수를 생성하여 `config` 폴더 안의 `application.yml` 파일에 붙인다.
+>
+>```
+>$ rake secret >> ./config/application.yml
+>```
+>
+> `application.yml` 파일을 열어, 128자리 난수 앞에 아래의 코드를 작성한다.
+>
+>```
+>$ vi ./config/application.yml
+>
+>SECRET_KEY_BASE: (방금 생성한 128자리 난수)
+>AWS_ID: (AWS_ID 값)
+>AWS_SECRET: (AWS_SECRET 값)
+>```
+>
+>( 이전에 환경변수에 AWS id, secret 값을 저장 했을 때)
+>
+>```
+>$ printenv | grep AWS 
+># 입력 하면 env에 저장된 aws이름의 변수 값들을 출력해줌 !
+>```
+>
+> `production` 환경으로 Database를 생성한다.
+>
+>```
+>$ RAILS_ENV=production rake db:migrate
+>```
+>
+> production 환경에서는 precompile된 assets들을 사용하기 때문에 precompile된 파일들을 따로 생성해주어야 한다. 아래의 명령어로 생성을 한다.
+>
+>```
+>$ RAILS_ENV=production rake assets:precompile
+>```
+>
+>아래의 명령어로 프로젝트를 refresh 한다.
+>
+>```
+># 처음 시작할 때면
+>$ sudo service nginx restart
+># 이후에는 
+>$ touch tmp/restart.txt
+>```
+>
+>Lightsail의 IP 주소를 브라우저 주소창에 입력하여 사이트에 접속이 되는지 확인한다.
 
-  * User -> email, password, password_confirmation, name ( naver, kakao 소셜 로그인)
-  * Post -> title, content, tag, postimage(carrierwave), user_id
-  * Like ->   t.references :user  t.references :post
-  * Comment -> post_id: integer, user_id: integer, content
+### 4. S3
 
-* db 관계
+>1. S3 Bucket 만들기
+>
+>이미지가 올라갈 버킷을 만든다. 버킷의 이름을 지정하고, 리전을 **아시아 태평양(서울)**로 설정하고 버킷을 생성한다
+>
+>2. Gemfile 추가하기
+>
+>```ruby
+># Gemfile에 추가
+>gem 'fog' 
+>```
+>
+>2. 2) gem 설치
+>
+>```
+>$ bundle install
+>```
+>
+>3. fog-aws.rb 
+>
+>`config/initializers` 폴더에 `fog-aws.rb`라는 이름의 파일을 만들어 준다. 내용은 다음과 같다.
+>
+>```ruby
+>CarrierWave.configure do |config|
+>  config.fog_credentials = {
+>    provider:              'AWS',
+>    aws_access_key_id:     ENV["AWS_ACCESS_KEY_ID"],
+>    aws_secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
+>    region:                'ap-northeast-2'
+>  }
+>  config.fog_directory  = '앞서 설정한 bucket 이름'
+>end
+>```
+>
+>4. Uploader
+>
+>`post_image_uploader.rb` 파일을 다음과 같이 수정한다.
+>
+>```ruby
+># Choose what kind of storage to use for this uploader:
+>storage :file
+># storage :fog
+>
+># 아래와 같이 변경
+>
+># Choose what kind of storage to use for this uploader:
+># storage :file
+>storage :fog
+>```
+>
+>S3에 이미지를 올리기 위한 모든 설정을 완료하였다. 새로운 게시글을 작성해보고 이미지가 S3 버킷에 잘 저장되는지 확인해보자 !
+>
+> 
 
-  * User : Post => 1 : N
-  * Post : Comment => 1 : N
-  * User : Comment => 1 : N
-  * Post : Like => 1 : N
-  * User : Like => 1 : N
 
-* Naming Rule
 
-  >##### 1. Controller -> application.rb
-  >
-  >- 현재 접속한 유저 -> current_user
-  >- 유저가 로그인 했는지 여부 -> user_signed_in?
-  >- 유저가 로그인 했다면 진행 -> authenticate_user!
-  >
-  >##### 2. Comment, like
-  >
-  >- Comment -> create_comment, destroy_comment, update_comment
-  >- like -> like_board
-  >
-  > ##### 3. routes
-  >
-  >#### 아래와 같이 routes 작성 방법을 통일합니다.
-  >
-  >```ruby
-  ># boards 로 된건 posts로 변경합시다.
-  ># root 만 root 'home#index'로 사용합시다.
-  >
-  >Rails.application.routes.draw do
-  >  resources :boards do
-  >    # member 같은 경우에는 routes에 자동으로 /:id/를 넣어준다.
-  >    member do
-  >      post '/comments' => 'boards#create_comment', as: :create_comment_to
-  >      delete '/comments/:comment_id' => 'boards#destroy_comment', as: :destroy_comment_to
-  >      patch '/comments/:comment_id' => 'boards#update_comment', as: :update_comment_to
-  >    end
-  >    # 하지만 collection는 자동으로 /:id/와 같이 잡아주지 않고 우리가 적은대로 만들어짐.
-  >    collection do
-  >      get '/:board_id/like' => 'boards#like_board', as: :user_like
-  >      get '/page_scroll' => 'boards#page_scroll', as: :scroll
-  >    end
-  >  end
-  >
-  >
-  >  root 'boards#index'
-  >
-  >  # sign in as는 패스네이밍을 변경해준다.
-  >  get '/signin' => 'sessions#signin', as: :user_signin # 로그인 페이지
-  >  post '/signin' => 'sessions#user_signin' # 실제 로그인
-  >  # sign up
-  >  get '/signup' => 'sessions#signup', as: :user_signup # 회원가입 페이지
-  >  post '/signup' => 'sessions#user_signup' # 실제 회원가입
-  >  post '/check_email' => 'sessions#check_email'
-  >  # sign out
-  >  delete 'signout' => 'sessions#signout', as: :user_signout # 로그아웃
-  >
-  >end
-  >```
-  >
-  >#### 4. private, before_action 
-  >
-  >```ruby
-  ># board -> post로 바꿔서 사용합시다.
-  >
-  >before_action :set_board, only: [:show, :edit, :update, :destroy]
-  >before_action :authenticate_user!, except: [:index, :show]
-  >
-  ># Use callbacks to share common setup or constraints between actions.
-  >def set_board
-  >  @board = Board.find(params[:id])
-  >end
-  >
-  ># Never trust parameters from the scary internet, only allow the white list through.
-  >def board_params
-  >  params.require(:board).permit(:title, :contents)
-  >end
-  >
-  >```
-  >​
-
-  ​
-
-  ​
