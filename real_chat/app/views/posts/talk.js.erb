@@ -1,0 +1,16 @@
+// Enable pusher logging - don't include this in production
+console.log("Pusher talk로 옮겨옴")
+Pusher.logToConsole = true;
+
+var pusher = new Pusher('04c565922ecaf9fca27c', {
+  cluster: 'ap1',
+  encrypted: true
+});
+
+var channel = pusher.subscribe('real_chat');
+channel.bind('hello', function(data) {
+  // alert(data.message);
+  $('#talks').prepend("<p>" + data.message + "</p>")
+});
+
+// $('#talks').append("<p><%= @talk.message %></p>")

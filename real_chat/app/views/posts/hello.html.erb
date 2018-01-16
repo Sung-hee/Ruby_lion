@@ -1,0 +1,41 @@
+<h1>pusher 테스트</h1>
+<!-- <%= form_tag '/talk', method: :get do %> -->
+  <%= text_field_tag :msg %>
+  <%= button_tag :submit, id: "talk_submit" %>
+<!-- <% end %> -->
+<div id="talks">
+  <% @talks.each do |talk| %>
+    <p><%= talk.message %></p>
+  <% end %>
+</div>
+<script>
+$(function(){
+  // Enable pusher logging - don't include this in production
+  console.log("Pusher talk로 옮겨옴")
+  Pusher.logToConsole = true;
+
+  var pusher = new Pusher('Rails.application.secrets.pusher_key', {
+    cluster: 'ap1',
+    encrypted: true
+  });
+
+  $('#talk_submit').click(function(){
+    $.ajax({
+      data: $('#msg').val(),
+      url: "/talk",
+      success: function(){
+        //1. pusher server에 있는 정보를 바탕으로 채널에 있는 데이터를 출력한다.
+        var channel = pusher.subscribe('real_chat');
+        channel.bind('hello', function(data) {
+          // alert(data.message);
+          var text = data.message;
+          $('#talks').prepend("<p>" + text + "</p>")
+        });
+        //2. input창을 비워준다.
+        $('#msg').val('');
+        $('#msg').focus();
+      }
+    });
+  });
+})
+</script>
